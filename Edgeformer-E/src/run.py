@@ -1,6 +1,5 @@
 import logging
 import os
-import pickle
 import random
 from time import time
 from collections import defaultdict
@@ -20,6 +19,7 @@ from src.data_bert import load_dataset_bert
 from transformers import BertConfig, BertTokenizerFast, AdamW, get_linear_schedule_with_warmup
 
 from transformers import BertModel
+import fickling
 
 def cleanup():
     dist.destroy_process_group()
@@ -65,7 +65,7 @@ def train(args):
 
     # load dataset
     if args.data_mode in ['bert']:
-        args.user_num, args.item_num, args.class_num = pickle.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
+        args.user_num, args.item_num, args.class_num = fickling.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
         train_set = load_dataset_bert(args, tokenizer, evaluate=False, test=False)
         val_set = load_dataset_bert(args, tokenizer, evaluate=True, test=False)
         test_set = load_dataset_bert(args, tokenizer, evaluate=True, test=True)
@@ -239,7 +239,7 @@ def test(args):
 
     # load dataset
     if args.data_mode in ['bert']:
-        args.user_num, args.item_num, args.class_num = pickle.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
+        args.user_num, args.item_num, args.class_num = fickling.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
         test_set = load_dataset_bert(args, tokenizer, evaluate=True, test=True)
     else:
         raise ValueError('Data Mode is Incorrect here!')

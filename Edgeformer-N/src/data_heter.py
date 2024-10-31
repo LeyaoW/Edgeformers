@@ -11,6 +11,7 @@ import torch
 
 from torch.utils.data.dataset import Dataset, TensorDataset
 from transformers import BertTokenizer, BertTokenizerFast
+import fickling
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ def load_dataset_text(args, tokenizer, evaluate=False, test=False):
     if os.path.exists(cached_features_file):
         if args.local_rank in [-1, 0]:
             logger.info(f"Loading features from cached file {cached_features_file}")
-        features = pickle.load(open(cached_features_file,'rb'))
+        features = fickling.load(open(cached_features_file,'rb'))
     else:
         if args.local_rank in [-1, 0]:
             logger.info("Creating features from dataset file at %s",
