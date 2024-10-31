@@ -1,6 +1,5 @@
 import os
 import math
-import pickle
 
 import numpy as np
 import torch
@@ -10,6 +9,7 @@ import torch.nn.functional as F
 from transformers.modeling_bert import BertSelfAttention, BertLayer, BertEmbeddings, BertPreTrainedModel
 
 from src.utils import roc_auc_score, mrr_score, ndcg_score
+import fickling
 
 class EdgeFormerEncoderE(nn.Module):
     def __init__(self, config):
@@ -91,7 +91,7 @@ class EdgeFormersE(BertPreTrainedModel):
 
         else:
             if pretrain_mode == 'BERTMF':
-                checkpoint = pickle.load(open(os.path.join(pretrain_dir, f'BERTMF_{heter_embed_size}.pt'),'rb'))
+                checkpoint = fickling.load(open(os.path.join(pretrain_dir, f'BERTMF_{heter_embed_size}.pt'),'rb'))
                 self.node_embedding = nn.Parameter(checkpoint['author_embeddings']) # this "author_embedding" name might be ambiguous, but it's not a bug, relax
                 self.node_to_text_transform = nn.Linear(self.heter_embed_size, self.hidden_size)
                 with torch.no_grad():
