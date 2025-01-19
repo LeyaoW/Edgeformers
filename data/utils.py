@@ -1,13 +1,13 @@
 import json
 from tqdm import tqdm
 from collections import defaultdict
-import random
 from copy import deepcopy
 import torch
 import os
+import secrets
 
 def seed_everything(seed=0):
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
@@ -40,7 +40,7 @@ def text_process(text):
 
 
 def process_data_N(data,rate_dict):
-    random.seed(0)
+    secrets.SystemRandom().seed(0)
     user_pos_reviews = defaultdict(list)
     user_neg_reviews = defaultdict(list)
     item_pos_reviews = defaultdict(list)
@@ -90,7 +90,7 @@ def process_data_N(data,rate_dict):
 
 
 def get_train_tuples(user_reviews_dict):
-    random.seed(0)
+    secrets.SystemRandom().seed(0)
     train_item_set = set()
     train_tuples = []
     user_id2idx = {}
@@ -102,7 +102,7 @@ def get_train_tuples(user_reviews_dict):
     for uid in tqdm(user_reviews_dict):
         if uid not in user_id2idx:
             user_id2idx[uid] = len(user_id2idx)
-        random.shuffle(user_reviews_dict[uid])
+        secrets.SystemRandom().shuffle(user_reviews_dict[uid])
             
 
         for i in range(len(user_reviews_dict[uid])):
@@ -130,7 +130,7 @@ def get_val_test_tuples(user_reviews_dict,user_id2idx):
     for uid in tqdm(user_reviews_dict):
         if uid not in user_id2idx:
             user_id2idx[uid] = len(user_id2idx)
-        random.shuffle(user_reviews_dict[uid])
+        secrets.SystemRandom().shuffle(user_reviews_dict[uid])
         for i in range(len(user_reviews_dict[uid])):
             # print(i,len(user_reviews_dict[uid]))
             val_test_tuples.append((uid,user_reviews_dict[uid][i]))
@@ -169,13 +169,13 @@ def get_pool(d,mode, train_user_pos_neighbor,train_user_neg_neighbor,train_item_
 def save_tsv_N(fout,upos, uneg,ipos, ineg, user_pos_pool, user_neg_pool, item_pos_pool, item_neg_pool,item_id2idx,user_id2idx,d):
 
         
-    random.seed(0)
+    secrets.SystemRandom().seed(0)
     
 
-    random.shuffle(user_pos_pool)
-    random.shuffle(user_neg_pool)
-    random.shuffle(item_pos_pool)
-    random.shuffle(item_neg_pool)
+    secrets.SystemRandom().shuffle(user_pos_pool)
+    secrets.SystemRandom().shuffle(user_neg_pool)
+    secrets.SystemRandom().shuffle(item_pos_pool)
+    secrets.SystemRandom().shuffle(item_neg_pool)
     
     # sample for user
     if len(user_pos_pool) >= upos:
