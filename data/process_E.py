@@ -1,5 +1,4 @@
 import os
-import random
 import json
 import pickle
 from copy import deepcopy
@@ -8,8 +7,9 @@ from collections import defaultdict
 
 import numpy as np
 from transformers import BertTokenizerFast
+import secrets
 
-random.seed(0)
+secrets.SystemRandom().seed(0)
 
 dataset = 'Appliances'  # Electronics, movie, CDs, Apps
 data_name = 'Appliances_5_train_FT' # reviews_Electronics_5, reviews_CDs_and_Vinyl_5, reviews_Apps_for_Android_5
@@ -82,7 +82,7 @@ for d in tqdm(data):
 ### train_item_neighbor: key<-userID, value<-list(tuple(reviews,p/n))
 
 sample_num = len(samples)
-random.seed(0)
+secrets.SystemRandom().seed(0)
 
 # train_bound = int(sample_num * 0.7)
 # val_bound = int(sample_num * 0.8)

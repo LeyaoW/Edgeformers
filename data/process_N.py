@@ -1,6 +1,5 @@
 from utils import load_json_data
 import os
-import random
 import json
 import pickle
 from tqdm import tqdm
@@ -9,9 +8,10 @@ from collections import defaultdict
 import numpy as np
 from transformers import BertTokenizerFast
 from utils import *
+import secrets
 
 
-random.seed(0)
+secrets.SystemRandom().seed(0)
 
 dataset="Appliances"
 
@@ -87,7 +87,7 @@ uneg = 3
 ipos = 5
 ineg = 5
 
-random.seed(0)
+secrets.SystemRandom().seed(0)
 with open(f'{dataset}/{output_dir}/train.tsv','w+') as fout:
     for d in tqdm(train_tuples):
         
@@ -97,7 +97,7 @@ with open(f'{dataset}/{output_dir}/train.tsv','w+') as fout:
 
 
 
-random.seed(0)
+secrets.SystemRandom().seed(0)
 valid_dev_edges = 0
 with open(f'{dataset}/{output_dir}/val.tsv','w+') as fout:
     for d in tqdm(val_tuples):
@@ -116,7 +116,7 @@ print(f'Number of Valid Dev Edges:{valid_dev_edges} | Total:{len(val_tuples)}')
     
     
     
-random.seed(0)
+secrets.SystemRandom().seed(0)
 valid_test_edges = 0
 with open(f'{dataset}/{output_dir}/test.tsv','w+') as fout:
     for d in tqdm(test_tuples):
