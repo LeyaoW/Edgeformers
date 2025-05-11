@@ -1,6 +1,5 @@
 import logging
 import os
-import pickle
 import random
 from time import time
 from collections import defaultdict
@@ -19,6 +18,7 @@ from src.data_heter import load_dataset_text
 from transformers import BertConfig, BertTokenizerFast, AdamW, get_linear_schedule_with_warmup
 
 from transformers import BertModel
+import fickling
 
 def cleanup():
     dist.destroy_process_group()
@@ -61,11 +61,11 @@ def train(args):
     # define tokenizer 
     tokenizer = BertTokenizerFast.from_pretrained("bert-base-uncased")
     # load sampling statistics
-    args.user_pos_neighbour, args.user_neg_neighbour, args.item_pos_neighbour, args.item_neg_neighbour = pickle.load(open(os.path.join(args.data_path,'neighbor_sampling.pkl'),'rb'))
+    args.user_pos_neighbour, args.user_neg_neighbour, args.item_pos_neighbour, args.item_neg_neighbour = fickling.load(open(os.path.join(args.data_path,'neighbor_sampling.pkl'),'rb'))
 
     # load dataset
     if args.data_mode in ['text']:
-        args.user_num, args.item_num, args.edge_type = pickle.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
+        args.user_num, args.item_num, args.edge_type = fickling.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
         train_set = load_dataset_text(args, tokenizer, evaluate=False, test=False)
         val_set = load_dataset_text(args, tokenizer, evaluate=True, test=False)
         test_set = load_dataset_text(args, tokenizer, evaluate=True, test=True)
@@ -224,11 +224,11 @@ def test(args):
     # define tokenizer
     tokenizer = BertTokenizerFast.from_pretrained("bert-base-uncased")
     # load sampling statistics
-    args.user_pos_neighbour, args.user_neg_neighbour, args.item_pos_neighbour, args.item_neg_neighbour = pickle.load(open(os.path.join(args.data_path,'neighbor_sampling.pkl'),'rb'))
+    args.user_pos_neighbour, args.user_neg_neighbour, args.item_pos_neighbour, args.item_neg_neighbour = fickling.load(open(os.path.join(args.data_path,'neighbor_sampling.pkl'),'rb'))
 
     # load dataset
     if args.data_mode in ['text']:
-        args.user_num, args.item_num, args.edge_type = pickle.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
+        args.user_num, args.item_num, args.edge_type = fickling.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
         test_set = load_dataset_text(args, tokenizer, evaluate=True, test=True)
     else:
         raise ValueError('Data Mode is Incorrect here!')
@@ -261,11 +261,11 @@ def infer(args):
     # define tokenizer 
     tokenizer = BertTokenizerFast.from_pretrained("bert-base-uncased")
     # load sampling statistics
-    args.user_pos_neighbour, args.user_neg_neighbour, args.item_pos_neighbour, args.item_neg_neighbour = pickle.load(open(os.path.join(args.data_path,'neighbor_sampling.pkl'),'rb'))
+    args.user_pos_neighbour, args.user_neg_neighbour, args.item_pos_neighbour, args.item_neg_neighbour = fickling.load(open(os.path.join(args.data_path,'neighbor_sampling.pkl'),'rb'))
 
     # load dataset
     if args.data_mode in ['text']:
-        args.user_num, args.item_num, args.edge_type = pickle.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
+        args.user_num, args.item_num, args.edge_type = fickling.load(open(os.path.join(args.data_path, 'node_num.pkl'),'rb'))
         train_set = load_dataset_text(args, tokenizer, evaluate=False, test=False)
     else:
         raise ValueError('Data Mode is Incorrect here!')
